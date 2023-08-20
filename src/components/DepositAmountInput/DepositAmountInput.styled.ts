@@ -15,6 +15,7 @@ export const AmountInput = styled.input`
   background-color: transparent;
   outline: none;
   font-size: 1.2rem;
+  width: 100%;
 `;
 
 export const Flex = styled.div`
