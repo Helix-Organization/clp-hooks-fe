@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { DepositAmountInput } from "../DepositAmountInput";
 import { SelectTokenModal } from "../SelectTokenModal";
+import { PreviewModal } from "../PreviewModal";
 
 const AddLiquidity = () => {
   const params = useParams();
@@ -18,10 +19,13 @@ const AddLiquidity = () => {
   const tokenB = searchParams.get("t") as string;
   const router = useRouter();
 
-  const [amountOfTokenA, setAmountOfTokenA] = useState<number>();
-  const [amountOfTokenB, setAmountOfTokenB] = useState<number>();
+  const [amountOfTokenA, setAmountOfTokenA] = useState<string>();
+  const [amountOfTokenB, setAmountOfTokenB] = useState<string>();
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(1);
   const [isOpenSelectTokenAModal, setIsOpenSelectTokenAModal] = useState(false);
   const [isOpenSelectTokenBModal, setIsOpenSelectTokenBModal] = useState(false);
+  const [isOpenPreviewModal, setIsOpenPreviewModal] = useState(false);
 
   const handleTokenASelect = (token: string) => {
     router.push(`/add/${token}${tokenB ? `?t=${tokenB}` : ""}`);
@@ -31,7 +35,10 @@ const AddLiquidity = () => {
     router.push(`/add/${tokenA}?t=${token}`);
   };
 
-  console.log(amountOfTokenA, amountOfTokenB);
+  const handlePriceRangeChange = (value: number[]) => {
+    setMinPrice(value[0]);
+    setMaxPrice(value[1]);
+  };
 
   return (
     <>
@@ -87,10 +94,30 @@ const AddLiquidity = () => {
           <S.ContentsItem>
             <S.SubTitle>Set Price Range</S.SubTitle>
 
-            <Slider range defaultValue={[0, 1]} min={0} max={1} step={0.01} />
+            <Slider
+              range
+              defaultValue={[0, 1]}
+              min={0}
+              max={1}
+              step={0.01}
+              onChange={handlePriceRangeChange}
+            />
+
+            <S.MinMaxPriceWrapper>
+              <S.MinMaxPrice>
+                <span>Min Price</span>
+                <span>{minPrice}</span>
+              </S.MinMaxPrice>
+              <S.MinMaxPrice>
+                <span>Max Price</span>
+                <span>{maxPrice}</span>
+              </S.MinMaxPrice>
+            </S.MinMaxPriceWrapper>
+
             <Button
               type="primary"
               disabled={!amountOfTokenA || !amountOfTokenB}
+              onClick={() => setIsOpenPreviewModal(true)}
             >
               {!amountOfTokenA || !amountOfTokenB
                 ? "Enter an Amounts"
@@ -111,6 +138,16 @@ const AddLiquidity = () => {
           onSelect={handleTokenBSelect}
           tokens={[]}
           onClose={() => setIsOpenSelectTokenBModal(false)}
+        />
+      )}
+      {isOpenPreviewModal && (
+        <PreviewModal
+          amountOfTokenA={amountOfTokenA}
+          amountOfTokenB={amountOfTokenB}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          feeTier="1"
+          onClose={() => setIsOpenPreviewModal(false)}
         />
       )}
     </>

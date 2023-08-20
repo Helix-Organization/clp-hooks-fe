@@ -121,3 +121,29 @@ export const PreviewButton = styled.button`
     filter: brightness(0.9);
   }
 `;
+
+export const MinMaxPriceWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+export const MinMaxPrice = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  border-radius: 10px;
+
+  span:first-child {
+    font-size: 0.8rem;
+  }
+
+  span:last-child {
+    font-weight: 700;
+  }
+`;
