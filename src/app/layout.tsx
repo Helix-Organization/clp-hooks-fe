@@ -1,4 +1,6 @@
+import { Background } from "@/layouts/Background";
 import { Header } from "@/layouts/Header";
+import { Main } from "@/layouts/Main";
 import StyledComponentsRegistry from "@/lib/registry";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -20,7 +22,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <StyledComponentsRegistry>
           <Header />
-          {children}
+          <Main>{children}</Main>
+          <Background />
         </StyledComponentsRegistry>
       </body>
     </html>
