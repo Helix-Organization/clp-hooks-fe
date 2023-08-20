@@ -1,7 +1,7 @@
 export interface DepositAmountInputProps {
   token: string;
-  value?: number;
-  onChange: (value: number) => void;
+  value?: string;
+  onChange: (value: string) => void;
   balance: number;
   dollarValue?: number;
 }

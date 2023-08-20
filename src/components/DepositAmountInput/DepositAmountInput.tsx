@@ -1,4 +1,3 @@
-import { useState } from "react";
 import * as S from "./DepositAmountInput.styled";
 import { DepositAmountInputProps } from "./DepositAmountInput.types";
 
@@ -20,12 +19,10 @@ const DepositAmountInput = ({
           pattern="^[0-9]*[.,]?[0-9]*$"
           value={value}
           onChange={(event) => {
-            const value = event.target.value;
-            const number = Number(value);
-            if (isNaN(number)) {
-              return;
+            const regex = /^[0-9]*[.,]?[0-9]*$/;
+            if (regex.test(event.target.value)) {
+              onChange(event.target.value);
             }
-            onChange(number);
           }}
         />
         <S.SelectedToken>{token}</S.SelectedToken>
