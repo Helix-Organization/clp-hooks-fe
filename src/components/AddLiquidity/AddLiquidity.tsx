@@ -40,6 +40,8 @@ const AddLiquidity = () => {
     setMaxPrice(value[1]);
   };
 
+  const handleLiquidityAddButtonClick = () => {};
+
   return (
     <>
       <S.AddLiquidity>
@@ -82,13 +84,15 @@ const AddLiquidity = () => {
                 dollarValue={12.5}
                 onChange={(value) => setAmountOfTokenA(value)}
               />
-              <DepositAmountInput
-                value={amountOfTokenB}
-                token={tokenB}
-                balance={0}
-                dollarValue={12.5}
-                onChange={(value) => setAmountOfTokenB(value)}
-              />
+              {tokenB && (
+                <DepositAmountInput
+                  value={amountOfTokenB}
+                  token={tokenB}
+                  balance={0}
+                  dollarValue={12.5}
+                  onChange={(value) => setAmountOfTokenB(value)}
+                />
+              )}
             </S.DepositAmountInputWrapper>
           </S.ContentsItem>
           <S.ContentsItem>
@@ -147,6 +151,7 @@ const AddLiquidity = () => {
           minPrice={minPrice}
           maxPrice={maxPrice}
           feeTier="1"
+          onAdd={handleLiquidityAddButtonClick}
           onClose={() => setIsOpenPreviewModal(false)}
         />
       )}
