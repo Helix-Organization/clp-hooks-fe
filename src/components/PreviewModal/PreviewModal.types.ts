@@ -4,5 +4,6 @@ export interface PreviewModalProps {
   minPrice?: number;
   maxPrice?: number;
   feeTier: string;
+  onAdd: () => void;
   onClose: () => void;
 }

@@ -11,6 +11,7 @@ import { useState } from "react";
 import { DepositAmountInput } from "../DepositAmountInput";
 import { SelectTokenModal } from "../SelectTokenModal";
 import { PreviewModal } from "../PreviewModal";
+import { ProcessingModal } from "../ProcessingModal";
 
 const AddLiquidity = () => {
   const params = useParams();
@@ -26,6 +27,10 @@ const AddLiquidity = () => {
   const [isOpenSelectTokenAModal, setIsOpenSelectTokenAModal] = useState(false);
   const [isOpenSelectTokenBModal, setIsOpenSelectTokenBModal] = useState(false);
   const [isOpenPreviewModal, setIsOpenPreviewModal] = useState(false);
+  const [isOpenProcessingModal, setIsOpenProcessingModal] = useState(false);
+  const [processingStatus, setProcessingStatus] = useState<
+    "pending" | "success" | "error"
+  >("pending");
 
   const handleTokenASelect = (token: string) => {
     router.push(`/add/${token}${tokenB ? `?t=${tokenB}` : ""}`);
@@ -40,7 +45,16 @@ const AddLiquidity = () => {
     setMaxPrice(value[1]);
   };
 
-  const handleLiquidityAddButtonClick = () => {};
+  const handleLiquidityAddButtonClick = async () => {
+    try {
+      setIsOpenPreviewModal(false);
+      setIsOpenProcessingModal(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setProcessingStatus("success");
+    } catch (error) {
+      setProcessingStatus("error");
+    }
+  };
 
   return (
     <>
@@ -66,8 +80,17 @@ const AddLiquidity = () => {
                 <DownArrow className="arrow" />
               </S.TokenButton>
               <S.TokenButton onClick={() => setIsOpenSelectTokenBModal(true)}>
-                {tokenB}
-                <DownArrow className="arrow" />
+                {tokenB ? (
+                  <>
+                    {tokenB}
+                    <DownArrow className="arrow" />
+                  </>
+                ) : (
+                  <>
+                    Select a token
+                    <DownArrow className="arrow" />
+                  </>
+                )}
               </S.TokenButton>
             </S.TokenButtonWrapper>
             <S.FeeTier>
@@ -104,6 +127,7 @@ const AddLiquidity = () => {
               min={0}
               max={1}
               step={0.01}
+              disabled={!tokenB}
               onChange={handlePriceRangeChange}
             />
 
@@ -153,6 +177,12 @@ const AddLiquidity = () => {
           feeTier="1"
           onAdd={handleLiquidityAddButtonClick}
           onClose={() => setIsOpenPreviewModal(false)}
+        />
+      )}
+      {isOpenProcessingModal && (
+        <ProcessingModal
+          status={processingStatus}
+          onClose={() => setIsOpenProcessingModal(false)}
         />
       )}
     </>

@@ -14,6 +14,7 @@ const PreviewModal = ({
   maxPrice,
   minPrice,
   feeTier,
+  onAdd,
   onClose,
 }: PreviewModalProps) => {
   const params = useParams();
@@ -72,7 +73,9 @@ const PreviewModal = ({
           </S.MinMaxPrice>
         </S.MinMaxPriceWrapper>
 
-        <Button type="primary">Add</Button>
+        <Button type="primary" onClick={onAdd}>
+          Add
+        </Button>
       </S.PreviewModal>
     </Modal>
   );
